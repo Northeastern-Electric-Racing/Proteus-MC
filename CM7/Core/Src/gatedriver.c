@@ -71,6 +71,8 @@ void gatedrv_init(gatedriver_t *gatedriver, TIM_HandleTypeDef* tim, ADC_HandleTy
 	/* Start Fake PWM signal for ADC timing */
 	assert(HAL_TIM_PWM_Start(gatedriver->tim, TIM_CHANNEL_4) == HAL_OK);
 
+	gatedriver->time_last = 0;
+	gatedriver->timing_data_index = 0;
 	gatedriver->initial_reading_taken = 0;
 }
 
@@ -103,6 +105,12 @@ void gatedrv_get_phase_currents(gatedriver_t *drv, float phase_currents[3])
 	phase_currents[0] = SAMPLE_TO_AMPS * (phase_currents[0] - drv->channel_offsets[0]);
 	phase_currents[1] = SAMPLE_TO_AMPS * (phase_currents[1] - drv->channel_offsets[1]);
 	phase_currents[2] = SAMPLE_TO_AMPS * (phase_currents[2] - drv->channel_offsets[2]);
+
+	if(!drv->time_last) {
+		uint32_t time_first_sample = us_timer_get();
+		drv->timing_data[drv->timing_data_index].time = 0;
+	}
+	drv->timing_data[drv->timing_data_index]
 }
 
 int16_t gatedrv_read_igbt_temp(gatedriver_t* drv)

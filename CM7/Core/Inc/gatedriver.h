@@ -46,7 +46,16 @@ typedef struct {
 
     int initial_reading_taken;
     float channel_offsets[3];
+
+    uint32_t time_last;
+    uint32_t timing_data_index;
+    gatedriver_timing_t timing_data[5000];
 } gatedriver_t;
+
+typedef struct {
+    uint32_t time;
+    uint32 phase_data[3];
+} gatedriver_timing_t
 
 extern const osThreadAttr_t phase_actor_attributes;
 void vPhaseActor(void *pv_params);

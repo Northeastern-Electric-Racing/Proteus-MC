@@ -106,11 +106,27 @@ void gatedrv_get_phase_currents(gatedriver_t *drv, float phase_currents[3])
 	phase_currents[1] = SAMPLE_TO_AMPS * (phase_currents[1] - drv->channel_offsets[1]);
 	phase_currents[2] = SAMPLE_TO_AMPS * (phase_currents[2] - drv->channel_offsets[2]);
 
-	if(!drv->time_last) {
-		uint32_t time_first_sample = us_timer_get();
+	if(!drv->time_first_sample) {
+		drv->time_first_sample = us_timer_get();
 		drv->timing_data[drv->timing_data_index].time = 0;
 	}
-	drv->timing_data[drv->timing_data_index]
+	if(!(drv->timing_data_index < NUM_SAMPLES))
+	{
+		uint64_t total_time_interval = 0;
+		for(int i = 0; i < NUM_SAMPLES - 1; i++)
+		{
+			uint8_t time_interval = drv->timing_data[i + 1].time - drv->timing_data[i].time;
+			total_time_interval += time_interval;
+		}
+		float avg_period = (float)total_time_interval / (float)4999;
+		float adc_sampling_frequency = 1 / (avg_period * pow(10, -6));
+		printf("Average sampling frequency measured over %ld samples: %ld Hz", NUM_SAMPLES, adc_sampling_frequency);
+	}
+	drv->timing_data[drv->timing_data_index].time = us_timer_get() - drv->time_first_sample;
+	drv->timing_data[drv->timing_data_index].phase_data[0] = phase_currents[0];
+	drv->timing_data[drv->timing_data_index].phase_data[1] = phase_currents[1];
+	drv->timing_data[drv->timing_data_index].phase_data[2] = phase_currents[2];
+	drv->timing_data_index++;
 }
 
 int16_t gatedrv_read_igbt_temp(gatedriver_t* drv)

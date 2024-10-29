@@ -152,7 +152,7 @@ void HAL_ADCEx_InjectedConvCpltCallback(ADC_HandleTypeDef* hadc) {
   }
 
   if (hadc == gatedrv_right.phase_adc) {
-    gatedrv_get_phase_currents(&gatedrv_left, adc_data.payload.phase_currents);
+    gatedrv_get_phase_currents(&gatedrv_right, adc_data.payload.phase_currents);
     foc_queue_frame(&ctrl_right, &adc_data);
   }
 }

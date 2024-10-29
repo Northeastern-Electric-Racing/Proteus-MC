@@ -7,7 +7,7 @@
 #include "foc_ctrl.h"
 #include <stdbool.h>
 #include <stdint.h>
-
+#define NUM_SAMPLES 10000
 /*
  * Note that these phases readings should ALWAYS be mapped to the corresponding indices
  * Ensure the ADC DMA is mapped the same across boards
@@ -47,9 +47,9 @@ typedef struct {
     int initial_reading_taken;
     float channel_offsets[3];
 
-    uint32_t time_last;
+    uint32_t time_first_sample;
     uint32_t timing_data_index;
-    gatedriver_timing_t timing_data[5000];
+    gatedriver_timing_t timing_data[NUM_SAMPLES];
 } gatedriver_t;
 
 typedef struct {

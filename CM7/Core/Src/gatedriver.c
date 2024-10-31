@@ -71,7 +71,7 @@ void gatedrv_init(gatedriver_t *gatedriver, TIM_HandleTypeDef* tim, ADC_HandleTy
 	/* Start Fake PWM signal for ADC timing */
 	assert(HAL_TIM_PWM_Start(gatedriver->tim, TIM_CHANNEL_4) == HAL_OK);
 
-	gatedriver->time_last = 0;
+	gatedriver->time_first_sample = 0;
 	gatedriver->timing_data_index = 0;
 	gatedriver->initial_reading_taken = 0;
 }

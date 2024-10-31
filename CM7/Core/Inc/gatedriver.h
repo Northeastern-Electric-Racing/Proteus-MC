@@ -7,7 +7,7 @@
 #include "foc_ctrl.h"
 #include <stdbool.h>
 #include <stdint.h>
-#define NUM_SAMPLES 10000
+#define NUM_SAMPLES 1000
 /*
  * Note that these phases readings should ALWAYS be mapped to the corresponding indices
  * Ensure the ADC DMA is mapped the same across boards
@@ -24,6 +24,11 @@ enum {
     GATEDRV_IGBT_TEMP,
     GATEDRV_SIZE_OF_ADC_DMA
 };
+
+typedef struct {
+    uint32_t time;
+    uint32_t phase_data[3];
+} gatedriver_timing_t;
 
 /* Definition of gatedriver struct */
 typedef struct {
@@ -52,10 +57,6 @@ typedef struct {
     gatedriver_timing_t timing_data[NUM_SAMPLES];
 } gatedriver_t;
 
-typedef struct {
-    uint32_t time;
-    uint32 phase_data[3];
-} gatedriver_timing_t
 
 extern const osThreadAttr_t phase_actor_attributes;
 void vPhaseActor(void *pv_params);

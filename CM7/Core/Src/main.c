@@ -258,7 +258,7 @@ int main(void)
 
   gatedrv_init(&gatedrv_right, &htim8, &hadc3, &ctrl_right);
   //ssi_encoder_t *ssi_encoder_right = ssi_encoder_init(&hspi4);
-  printf("MC Initialized...\r\n");
+  printf("CM7 MC Initialized...\r\n");
   /* USER CODE END RTOS_MUTEX */
 
   /* USER CODE BEGIN RTOS_SEMAPHORES */
@@ -290,24 +290,23 @@ int main(void)
   ctrl_right.thread = osThreadNew(vFOCctrl, &ctrl_right, &foc_ctrl_attributes);
   assert(ctrl_right.thread);
 
-  printf("Tasks Created...\r\n");
+  printf("CM7 Tasks Created...\r\n");
   /* USER CODE END RTOS_THREADS */
 
   /* USER CODE BEGIN RTOS_EVENTS */
   /* add events, ... */
-  printf("Starting Kernel...\r\n");
+  printf("CM7 Starting Kernel...\r\n");
   /* USER CODE END RTOS_EVENTS */
 
   /* Start scheduler */
   osKernelStart();
-
   /* We should never get here as control is now taken by the scheduler */
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
     /* USER CODE END WHILE */
-
+    printf("COOKED");
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
@@ -1387,6 +1386,7 @@ static void MX_GPIO_Init(void)
 void StartDefaultTask(void *argument)
 {
   /* USER CODE BEGIN 5 */
+ 
   int curr_time = us_timer_get();
   float duty_cycles[3] = {0.5, 0.5, 0.5};
   gatedrv_write_pwm(&gatedrv_left, duty_cycles);
@@ -1395,20 +1395,24 @@ void StartDefaultTask(void *argument)
   /* Infinite loop */
   for (;;)
   {
-    HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
-    osDelay(500);
-    printf("U: %ld A, V: %ld A, W: %ld A, Time: %ld us\r\n",
-           (uint32_t)(duty_cycles[0] * 100),
-           (uint32_t)(duty_cycles[1] * 100),
-           (uint32_t)(duty_cycles[2] * 100),
-           us_timer_get() - curr_time);
+    printf(" BALLS \r \n");
+    HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_14);
+    printf("BALLS 2 \r \n");
+    // osDelay(500);
+    printf("BALLS 3: %ld \r \n", (uint32_t)(duty_cycles[0]));
+    // printf("U: %ld A, V: %ld A, W: %ld A, Time: %ld us\r\n",
+    //        (uint32_t)(duty_cycles[0] * 100),
+    //        (uint32_t)(duty_cycles[1] * 100),
+    //        (uint32_t)(duty_cycles[2] * 100),
+    //        us_timer_get() - curr_time);
     duty_cycles[0] = duty_cycles[0] + 0.01 >= 1.0 ? 0.0 : duty_cycles[0] + 0.01;
+    printf("BALLS 4 \r \n");
     duty_cycles[1] = duty_cycles[1] + 0.01 >= 1.0 ? 0.0 : duty_cycles[1] + 0.01;
     duty_cycles[2] = duty_cycles[2] + 0.01 >= 1.0 ? 0.0 : duty_cycles[2] + 0.01;
     gatedrv_write_pwm(&gatedrv_left, duty_cycles);
     gatedrv_write_pwm(&gatedrv_right, duty_cycles);
     curr_time = us_timer_get();
-    //printf("Failure: %d\r\n", ipcc_transfer(&ipcc, &msg));
+    printf("Failure: %d\r\n", ipcc_transfer(&ipcc, &msg));
   }
   /* USER CODE END 5 */
 }

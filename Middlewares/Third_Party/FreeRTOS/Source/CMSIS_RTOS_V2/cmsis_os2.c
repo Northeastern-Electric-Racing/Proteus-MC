@@ -264,7 +264,6 @@ osKernelState_t osKernelGetState (void) {
 
 osStatus_t osKernelStart (void) {
   osStatus_t stat;
-
   if (IS_IRQ()) {
     stat = osErrorISR;
   }

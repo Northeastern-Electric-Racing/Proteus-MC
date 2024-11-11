@@ -7,7 +7,7 @@
 #include "foc_ctrl.h"
 #include <stdbool.h>
 #include <stdint.h>
-#define NUM_SAMPLES 1000
+#define NUM_SAMPLES 100
 /*
  * Note that these phases readings should ALWAYS be mapped to the corresponding indices
  * Ensure the ADC DMA is mapped the same across boards

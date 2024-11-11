@@ -15,7 +15,7 @@ void gatedrv_init(gatedriver_t *gatedriver, TIM_HandleTypeDef* tim, ADC_HandleTy
 	/* Assert hardware params */
 	assert(tim);
 	assert(phase_adc);
-
+	printf("GATE DRIVER INIT\r\n");
 	/* Set interfaces */
 	gatedriver->tim			= tim;
 	gatedriver->phase_adc	= phase_adc;

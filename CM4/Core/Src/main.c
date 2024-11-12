@@ -504,22 +504,21 @@ void StartDefaultTask(void *argument)
   /* Infinite loop */
   for (;;)
   {
-    //printf("BALLS");
-    
-    // ipcc_transfer(&ipcc, &msg);
-    // ipcc_signal(&ipcc);
-    // osDelay(1000);
+    HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_15);
+    ipcc_transfer(&ipcc, &msg);
+    ipcc_signal(&ipcc);
+    osDelay(1000);
 
     // Take the semaphore and notify Cortex-M7
-    // uint32_t sem_id = 0; // Use semaphore 0
-    // uint32_t core_mask = HSEM_CR_COREID_Msk; // Notify Cortex-M7 core
+    uint32_t sem_id = 0; // Use semaphore 0
+    uint32_t core_mask = HSEM_CR_COREID_Msk; // Notify Cortex-M7 core
 
-    // if (HAL_HSEM_Take(sem_id, core_mask) == HAL_OK) {
-    //     // Successfully took semaphore, Cortex-M7 will be notified
-    // }
-    // HAL_HSEM_Release(sem_id, core_mask);
+    if (HAL_HSEM_Take(sem_id, core_mask) == HAL_OK) {
+        // Successfully took semaphore, Cortex-M7 will be notified
+    }
+    HAL_HSEM_Release(sem_id, core_mask);
 
-    // i++;
+    i++;
   }
   /* USER CODE END 5 */
 }

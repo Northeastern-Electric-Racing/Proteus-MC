@@ -306,7 +306,7 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-    printf("COOKED");
+    // printf("COOKED");
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
@@ -1395,24 +1395,20 @@ void StartDefaultTask(void *argument)
   /* Infinite loop */
   for (;;)
   {
-    printf(" BALLS \r \n");
-    HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_14);
-    printf("BALLS 2 \r \n");
-    // osDelay(500);
-    printf("BALLS 3: %ld \r \n", (uint32_t)(duty_cycles[0]));
-    // printf("U: %ld A, V: %ld A, W: %ld A, Time: %ld us\r\n",
-    //        (uint32_t)(duty_cycles[0] * 100),
-    //        (uint32_t)(duty_cycles[1] * 100),
-    //        (uint32_t)(duty_cycles[2] * 100),
-    //        us_timer_get() - curr_time);
+    HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
+    osDelay(500);
+    printf("U: %ld A, V: %ld A, W: %ld A, Time: %ld us\r\n",
+           (uint32_t)(duty_cycles[0] * 100),
+           (uint32_t)(duty_cycles[1] * 100),
+           (uint32_t)(duty_cycles[2] * 100),
+           us_timer_get() - curr_time);
     duty_cycles[0] = duty_cycles[0] + 0.01 >= 1.0 ? 0.0 : duty_cycles[0] + 0.01;
-    printf("BALLS 4 \r \n");
     duty_cycles[1] = duty_cycles[1] + 0.01 >= 1.0 ? 0.0 : duty_cycles[1] + 0.01;
     duty_cycles[2] = duty_cycles[2] + 0.01 >= 1.0 ? 0.0 : duty_cycles[2] + 0.01;
     gatedrv_write_pwm(&gatedrv_left, duty_cycles);
     gatedrv_write_pwm(&gatedrv_right, duty_cycles);
     curr_time = us_timer_get();
-    printf("Failure: %d\r\n", ipcc_transfer(&ipcc, &msg));
+    // printf("Failure: %d\r\n", ipcc_transfer(&ipcc, &msg));
   }
   /* USER CODE END 5 */
 }

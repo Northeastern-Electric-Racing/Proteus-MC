@@ -31,7 +31,7 @@ enum {
 
 void foc_ctrl_init(foc_ctrl_t *controller)
 {
-	printf("FOC INIT \r\n");
+	// printf("FOC INIT \r\n");
 	controller->data_queue = osMessageQueueNew(INBOUND_QUEUE_SIZE, sizeof(foc_data_t), NULL);
 	controller->command_queue = osMessageQueueNew(OUTBOUND_QUEUE_SIZE, sizeof(pwm_signal_t[3]), NULL);
 
